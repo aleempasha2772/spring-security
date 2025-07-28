@@ -1,13 +1,21 @@
 package com.example.spring_security.controller;
 
 
+import com.example.spring_security.Entity.User;
+import com.example.spring_security.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SecurityController {
 
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("greeting")
     public String greeting(Authentication authentication) {
@@ -27,10 +35,14 @@ public class SecurityController {
         return "Hello you are admin : " + userName;
     }
 
-
-
     @GetMapping("/public/greeting")
     public String publicGreeting() {
         return "Spring Security In-memory Authentication Example - Public Greeting";
     }
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser() {
+        User savedUser = customUserDetailsService.saveUser();
+        return ResponseEntity.ok(savedUser);
+    }
+
 }
