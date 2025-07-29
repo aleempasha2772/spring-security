@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public User saveUser() {
         // Find role by name or id
-        Role userRole = roleRepository.findByName("USER")
+        Role userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         // Hash password
@@ -42,6 +42,24 @@ public class CustomUserDetailsService implements UserDetailsService {
         // Build user
         User user = new User();
         user.setUsername("aleem");
+        user.setPassword(encodedPassword);
+        user.setRoles(Set.of(userRole));  // add role
+
+        return userRepository.save(user);
+    }
+
+
+    public User saveAdmin() {
+        // Find role by name or id
+        Role userRole = roleRepository.findByName("ROLE_ADMIN")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Hash password
+        String encodedPassword = passwordEncoder.encode("admin");
+
+        // Build user
+        User user = new User();
+        user.setUsername("admin");
         user.setPassword(encodedPassword);
         user.setRoles(Set.of(userRole));  // add role
 
@@ -62,7 +80,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 authorities);
     }
-
 
 
 }

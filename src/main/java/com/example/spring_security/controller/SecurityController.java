@@ -45,4 +45,17 @@ public class SecurityController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @PostMapping("/create/admin")
+    public ResponseEntity<User> createAdminUser() {
+        User savedUser = customUserDetailsService.saveAdmin();
+        return ResponseEntity.ok(savedUser);
+    }
+
+    /*
+    INSERT INTO roles (name) VALUES ('ROLE_USER');
+    INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
+
+     */
+
+
 }
